@@ -38,7 +38,7 @@ public class AlgamoneyExceptionHandler extends ResponseEntityExceptionHandler {
 		return handleExceptionInternal(ex, erros, headers, HttpStatus.BAD_REQUEST, request);
 	}
 	
-	@Override						// Captura o erro de campos que não passaram pela validação
+	@Override						
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		
@@ -68,11 +68,8 @@ public class AlgamoneyExceptionHandler extends ResponseEntityExceptionHandler {
 	private List<Erro> criarListaDeErros(BindingResult bindingResult) {
 		List<Erro> erros = new ArrayList<>();
 		
-			//Percorre procurando todos os campos que deram erros
 		for (FieldError fieldError : bindingResult.getFieldErrors()) {
-			// Sempre devolve para o usuário o erro configurado no messaSource
 			String mensagemUsuario = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
-			// Sempre devolve para o desenvolvedor o próprio erro do sistema
 			String mensagemDesenvolvedor = fieldError.toString();
 			erros.add(new Erro(mensagemUsuario, mensagemDesenvolvedor));
 		} 
@@ -100,14 +97,5 @@ public class AlgamoneyExceptionHandler extends ResponseEntityExceptionHandler {
 		}
 		
 	}
-	/*
-	 * As anotações do Bean Validation,
-	 *  possuem mensagens padrão e que podem ser customizadas
-	 *   através do arquivo ValidationMessages.properties, por convenção.
-	 *   
-	 *   Os arquivos de configuração de mensagens são melhores pq evitam mensagens
-	 *   espalhadas por várias entidades do sistema e são ótimas caso você queira
-	 *   internacionalizar sua aplicação
-	 */
 	
 }
